@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Save the Date</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('background.jpeg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .envelope-container {
+      position: relative;
+      width: 600px;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+    }
+
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 70%;
+      background: #f4c2c2; /* Rosa palo */
+      border: 2px solid #d4a5a5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: visible; /* Allow card to fully emerge */
+    }
+
+    /* Top flap of the envelope */
+    .envelope .flap {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 50%;
+      background: #f4c2c2;
+      border-bottom: 2px solid #d4a5a5;
+      transform-origin: top center;
+      transform: rotateX(0deg);
+      transition: transform 0.6s ease-in-out;
+      z-index: 2;
+    }
+
+    .envelope.open .flap {
+      transform: rotateX(-120deg);
+    }
+
+    /* Bottom part of the envelope */
+    .envelope .body {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Card inside */
+    .card {
+      position: absolute;
+      top: 70%; /* Start hidden inside the envelope */
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      height: auto;
+      opacity: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.6s ease-in-out, top 0.8s ease-in-out; /* Smooth emerging effect */
+      z-index: 3;
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .envelope.open .card {
+      top: calc(50% - 19px); /* Moves slightly upward by 0.5 cm */
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="envelope-container">
+    <div class="envelope" onclick="openEnvelope()">
+      <div class="flap"></div>
+      <div class="body"></div>
+      <div class="card">
+        <img src="Save the date EN.jpeg" alt="Save the Date">
+      </div>
+    </div>
+  </div>
+  <audio id="song" src="song.mp4"></audio>
+  <script>
+    const envelope = document.querySelector('.envelope');
+    const song = document.getElementById('song');
+
+    function openEnvelope() {
+      if (!envelope.classList.contains('open')) {
+        envelope.classList.add('open');
+        song.currentTime = 0; // Restart the song
+        song.play();
+      } else {
+        song.pause();
+        envelope.classList.remove('open');
+      }
+    }
+
+    document.querySelector('.card').addEventListener('click', () => {
+      if (!song.paused) {
+        song.pause();
+      } else {
+        song.currentTime = 0; // Restart the song
+        song.play();
+      }
+    });
+  </script>
+</body>
+</html>
